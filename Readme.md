@@ -8,6 +8,15 @@
 ## Паттерн - Адаптер
 Паттерн Адаптер (Adapter) предназначен для преобразования интерфейса одного класса в интерфейс другого. Благодаря реализации данного паттерна мы можем использовать вместе классы с несовместимыми интерфейсами. 
 
+Участники в реалиях нашего приложения:
+* IShipTransport: представляет объекты, которые используются клиентом
+
+* ShipService: использует объекты IShipTransport для реализации своих задач.
+
+* Car: представляет адаптируемый класс, который мы хотели бы использовать у клиента вместо объектов IShipTransport.
+
+* CarToShipAdapter: собственно адаптер, который позволяет работать с объектами Car как с объектами IShipTransport.
+
 ## Паттерн - Строитель
 Строитель (Builder) - шаблон проектирования, который инкапсулирует создание объекта и позволяет разделить его на различные этапы.
 
@@ -18,81 +27,18 @@
 
 * FerrariBuilder: конкретная реализация CarBuildera. Создает объект Car и определяет интерфейс для доступа к нему
 
+У нас есть 13 автомобильных частей, которые устанавливаются в автомобиль в зависимости от его конфигурации. Мы можем собрать автомобиль в 3 вариациях: BuildMainParts(Только необходимые части), BuildExtraParts(Дополнительные части, улучшающие комфорт) и BuildPremiumParts(Премиум части, обеспечивающие наивысший комфорт). 
+
 
 ## Паттерн - Состояние
 Состояние (State) - шаблон проектирования, который позволяет объекту изменять свое поведение в зависимости от внутреннего состояния. 
 
+Участники данного паттерна следующие:
+* ICarState: определяет интерфейс состояния
+
+* Классы OffEngineState, WorkEngineState и DriveState - конкретные реализации состояний. OffEngineState отвечает за состояние заглушенного мотора, WorkEngineState за состояние работающего, а DriveState за состояние нахождения автомобиля в движении.
+
+* Car: представляет объект, поведение которого должно динамически изменяться в соответствии с состоянием. Выполнение же конкретных действий делегируется объекту состояния. В нашем приложении состояние автомобиля может меняться следующим образом: Автомобиль может быть заглушен, заведен или находится в движении, а также путешествовать на пароме.
+
 ## Диаграмма классов UML
-
-```plantuml
-@startuml
-class Car{
-    CarName:string
-    CarParts:List<Part>
-    State:ICarState
-    
-    StartEngine():void
-    TurnOffEngine():void
-    Drive():void
-    TravelShip():void
-} 
-interface ICarState{
-    StartEngine(Car car):void
-    TurnOffEngine(Car car):void
-    Drive(Car car):void
-    TravelShip(Car car):void
-}
-class OffEngineState{
-    StartEngine(Car car):void
-    TurnOffEngine(Car car):void
-    Drive(Car car):void
-    TravelShip(Car car):void
-}
-class DriveState{
-    StartEngine(Car car):void
-    TurnOffEngine(Car car):void
-    Drive(Car car):void
-    TravelShip(Car car):void
-}
-class WorkEngineState{
-    StartEngine(Car car):void
-    TurnOffEngine(Car car):void
-    Drive(Car car):void
-    TravelShip(Car car):void
-}
-abstract class CarBuilder{
-    BuildMainParts():FerrariBuilder
-    BuildExtraParts():FerrariBuilder
-    BuildPremiumParts():FerrariBuilder
-    GetResult():Car
-}
-class FerrariBuilder{
-    car:Car
-    BuildMainParts():FerrariBuilder
-    BuildExtraParts():FerrariBuilder
-    BuildPremiumParts():FerrariBuilder
-    GetResult():Car
-}
-interface IShipTransport{
-    Sail():void
-}
-class ShipService{
-    Travel():void
-}
-class CarToShipAdapter {
-    car:Car
-  
-    Sail():void
-}
-
-FerrariBuilder--> CarBuilder
-FerrariBuilder--> Car
-WorkEngineState-->ICarState
-OffEngineState-->ICarState
-DriveState-->ICarState
-Car-->ICarState
-CarToShipAdapter-->Car
-CarToShipAdapter-->ShipService
-ShipService-->IShipTransport
-@enduml
-```
+![image](https://github.com/Psy-Fly/PatternsSecond/assets/96136522/0e08203e-921b-46db-a77e-67e2ad9f507c)
