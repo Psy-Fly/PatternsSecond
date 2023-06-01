@@ -95,3 +95,4 @@ CarToShipAdapter-->Car
 CarToShipAdapter-->ShipService
 ShipService-->IShipTransport
 @enduml
+```
